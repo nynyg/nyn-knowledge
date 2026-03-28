@@ -17,9 +17,11 @@
     .callout { margin: 18px 40px 0; padding: 14px 16px; border: 1px solid #fde68a; background: #fffbeb; color: #92400e; border-radius: 12px; font-size: 0.92rem; line-height: 1.55; }
     .toolbar { padding: 20px 40px 8px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     .toolbar-label { font-size: 0.86rem; color: #6b7280; font-weight: 600; }
-    .filters { display: flex; gap: 10px; flex-wrap: wrap; }
-    .tag { padding: 6px 12px; border-radius: 999px; font-size: 0.82rem; cursor: pointer; border: 1px solid #d1d5db; background: #fff; color: #4b5563; transition: all 0.18s; }
-    .tag:hover, .tag.active { background: #fff7ed; border-color: #fb923c; color: #c2410c; }
+    .filters { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+    .filters::-webkit-scrollbar { height: 6px; }
+    .filters::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 999px; }
+    .tag { padding: 10px 14px; border-radius: 12px 12px 0 0; font-size: 0.84rem; cursor: pointer; border: 1px solid #d1d5db; border-bottom: 2px solid #e5e7eb; background: #f9fafb; color: #4b5563; transition: all 0.18s; white-space: nowrap; }
+    .tag:hover, .tag.active { background: #fff; border-color: #fdba74; border-bottom-color: #f59e0b; color: #c2410c; }
     .count { padding: 0 40px 14px; font-size: 0.92rem; color: #6b7280; }
     .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
     .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
@@ -116,7 +118,9 @@
         tldr: "Improves on LoRA by decomposing weights into magnitude and direction, then adapting mainly the directional component for better stability and expressiveness.",
         questions: ["How does DoRA differ from LoRA?", "Why decompose weights into magnitude and direction?"],
         answer: "Explain that DoRA separates weight magnitude from direction and applies low-rank adaptation to the more informative directional component. The pitch is better training behavior and capacity than plain LoRA.",
-        appleWhy: "Good follow-up question if they want to test whether you know the evolution of parameter-efficient tuning beyond the original paper."
+        appleWhy: "Good follow-up question if they want to test whether you know the evolution of parameter-efficient tuning beyond the original paper.",
+        figure: "./assets/figures/dora.svg",
+        figureCaption: "Simplified study figure: DoRA separates weight magnitude from direction and adapts direction more effectively."
       },
       {
         title: "KV Caching Explained",
@@ -180,7 +184,9 @@
         tldr: "Explains how AWQ uses activation statistics to find especially important weight channels and protect them during low-bit quantization.",
         questions: ["What is AWQ protecting during quantization?", "Why are activations useful for deciding which weights matter most?"],
         answer: "Say AWQ identifies salient channels using observed activation patterns, then shields those channels from aggressive quantization. The key idea is that importance should be measured using actual model behavior, not all weights equally.",
-        appleWhy: "This shows whether you understand smarter quantization methods beyond the generic concept of low-bit compression."
+        appleWhy: "This shows whether you understand smarter quantization methods beyond the generic concept of low-bit compression.",
+        figure: "./assets/figures/awq.svg",
+        figureCaption: "Simplified study figure: activation-aware saliency helps decide which channels to protect."
       },
       {
         title: "ParetoQ: Scaling Laws in Extremely Low-Bit LLM Quantization",
@@ -210,7 +216,9 @@
         tldr: "Separates weights into a dense low-bit quantized component plus a sparse high-precision correction, preserving the most error-sensitive weights.",
         questions: ["How is SqueezeLLM different from uniform low-bit quantization?", "Why keep a sparse set of weights in high precision?"],
         answer: "Say it keeps a sparse correction in high precision so the most error-sensitive weights are preserved, instead of forcing every weight through the same low-bit approximation.",
-        appleWhy: "This tests whether you understand quantization as an accuracy-preserving systems technique, not just a memory trick."
+        appleWhy: "This tests whether you understand quantization as an accuracy-preserving systems technique, not just a memory trick.",
+        figure: "./assets/figures/squeezellm.svg",
+        figureCaption: "Simplified study figure: dense low-bit weights plus a sparse high-precision correction."
       },
       {
         title: "QIGen: Generating Efficient Kernels for Quantized Inference on Large Language Models",
@@ -270,7 +278,9 @@
         tldr: "Lightweight runtime for running quantized LLMs on CPUs, Apple Silicon, and GPUs with minimal dependencies — a core path for local and on-device inference.",
         questions: ["Why is llama.cpp important for local or on-device inference?", "What makes it especially relevant for Apple Silicon?"],
         answer: "Say it has become a practical reference runtime for efficient quantized local inference, especially on commodity CPUs and Apple Silicon, where memory efficiency and runtime simplicity matter a lot.",
-        appleWhy: "Anything on-device and Apple-Silicon-adjacent is unusually relevant here."
+        appleWhy: "Anything on-device and Apple-Silicon-adjacent is unusually relevant here.",
+        figure: "./assets/figures/llama-cpp.svg",
+        figureCaption: "Simplified study figure: quantized model + lightweight runtime = practical local inference."
       },
       {
         title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
@@ -347,7 +357,9 @@
         tldr: "Overview of Apple's foundation models and deployment strategy, including on-device/server splits, adapters for user-facing features, and hardware-aware deployment constraints.",
         questions: ["What stands out technically about Apple's foundation model strategy?", "Why is on-device execution such a big deal?"],
         answer: "Focus on the product-driven balance among privacy, latency, hardware limits, and user experience. Apple's strategy is not just model quality — it's deployment under tight product constraints.",
-        appleWhy: "This is the most directly Apple-specific item on the list."
+        appleWhy: "This is the most directly Apple-specific item on the list.",
+        figure: "./assets/figures/afm.svg",
+        figureCaption: "Simplified study figure: Apple balances on-device execution, routing/adapters, and server-side capability."
       },
       {
         title: "Qwen3 Technical Report",

@@ -1,0 +1,24 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="34" font-family="Arial" font-weight="700" fill="#111827">Apple Foundation Models intuition</text>
+  <text x="60" y="110" font-size="20" font-family="Arial" fill="#6b7280">Think in terms of product constraints: privacy, latency, hardware limits, and quality.</text>
+  <rect x="120" y="200" width="240" height="220" rx="18" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="240" y="270" text-anchor="middle" font-size="28" font-family="Arial" font-weight="700" fill="#1d4ed8">On-device</text>
+  <text x="240" y="320" text-anchor="middle" font-size="22" font-family="Arial" fill="#1e3a8a">privacy</text>
+  <text x="240" y="355" text-anchor="middle" font-size="22" font-family="Arial" fill="#1e3a8a">low latency</text>
+  <text x="240" y="390" text-anchor="middle" font-size="22" font-family="Arial" fill="#1e3a8a">hardware limits</text>
+  <rect x="480" y="200" width="240" height="220" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="600" y="270" text-anchor="middle" font-size="28" font-family="Arial" font-weight="700" fill="#111827">Routing / adapters</text>
+  <text x="600" y="320" text-anchor="middle" font-size="22" font-family="Arial" fill="#374151">feature specialization</text>
+  <text x="600" y="355" text-anchor="middle" font-size="22" font-family="Arial" fill="#374151">task-specific control</text>
+  <rect x="840" y="200" width="240" height="220" rx="18" fill="#ecfdf5" stroke="#86efac" stroke-width="2"/>
+  <text x="960" y="270" text-anchor="middle" font-size="28" font-family="Arial" font-weight="700" fill="#166534">Server side</text>
+  <text x="960" y="320" text-anchor="middle" font-size="22" font-family="Arial" fill="#166534">bigger models</text>
+  <text x="960" y="355" text-anchor="middle" font-size="22" font-family="Arial" fill="#166534">higher capability</text>
+  <path d="M360 310 H450" stroke="#64748b" stroke-width="6" marker-end="url(#arrow)"/>
+  <path d="M720 310 H810" stroke="#64748b" stroke-width="6" marker-end="url(#arrow)"/>
+  <rect x="120" y="510" width="960" height="110" rx="18" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+  <text x="150" y="560" font-size="24" font-family="Arial" font-weight="700" fill="#7c2d12">Interview takeaway</text>
+  <text x="150" y="600" font-size="22" font-family="Arial" fill="#7c2d12">Apple's story is not just model quality. It's how to split work across device and server while respecting privacy, latency, and hardware constraints.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#64748b"/></marker></defs>
+</svg>

@@ -3,57 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interview Prep Papers</title>
+  <title>Apple Interview Prep · nyn-knowledge</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e4e8; min-height: 100vh; }
-    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     header h1 { font-size: 1.4rem; font-weight: 600; }
     header span { font-size: 0.85rem; color: #8b949e; }
-    header a { font-size: 0.85rem; color: #388bfd; text-decoration: none; }
+    header a { font-size: 0.9rem; color: #58a6ff; text-decoration: none; }
+    .search { padding: 20px 40px 0; }
+    .search input { width: 100%; max-width: 640px; padding: 12px 16px; background: #21262d; border: 1px solid #30363d; border-radius: 10px; color: #e1e4e8; font-size: 0.95rem; outline: none; }
+    .search input:focus { border-color: #f78522; }
+    .callout { margin: 18px 40px 0; padding: 14px 16px; border: 1px solid #3d2c18; background: #21180f; color: #f2cc9b; border-radius: 10px; font-size: 0.9rem; line-height: 1.55; }
     .filters { padding: 20px 40px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .tag { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #8b949e; transition: all 0.2s; }
+    .tag { padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #8b949e; transition: all 0.2s; }
     .tag:hover, .tag.active { background: #f7852222; border-color: #f78522; color: #f78522; }
+    .count { padding: 0 40px 14px; font-size: 0.9rem; color: #8b949e; }
     .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
-    .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
-    .card:hover { border-color: #f78522; }
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 14px; padding: 20px; transition: border-color 0.2s, transform 0.15s; }
+    .card:hover { border-color: #f78522; transform: translateY(-1px); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .venue { font-size: 0.75rem; background: #f7852222; color: #f78522; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
-    .card h3 { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .card h3 { font-size: 0.98rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
     .card h3 a { color: #e1e4e8; text-decoration: none; }
     .card h3 a:hover { color: #f78522; }
-    .authors { font-size: 0.8rem; color: #8b949e; margin-bottom: 8px; }
-    .tldr { font-size: 0.85rem; color: #c9d1d9; line-height: 1.5; margin-bottom: 12px; }
+    .authors { font-size: 0.82rem; color: #8b949e; margin-bottom: 8px; }
+    .tldr { font-size: 0.86rem; color: #c9d1d9; line-height: 1.55; margin-bottom: 12px; }
     .qa { margin-top: 14px; padding-top: 12px; border-top: 1px solid #262c36; display: grid; gap: 10px; }
-    .qa-block { font-size: 0.82rem; line-height: 1.5; color: #c9d1d9; }
+    .qa-block { font-size: 0.82rem; line-height: 1.55; color: #c9d1d9; }
     .qa-block strong { display: inline-block; margin-bottom: 4px; color: #f0f6fc; }
-    .callout { margin: 18px 40px 0; padding: 14px 16px; border: 1px solid #3d2c18; background: #21180f; color: #f2cc9b; border-radius: 10px; font-size: 0.88rem; line-height: 1.5; }
-    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; padding: 0 16px 24px; } .filters, .search, .count { padding-left: 16px; padding-right: 16px; } header { padding: 16px; } .callout { margin-left: 16px; margin-right: 16px; } }
-    .card-footer { display: flex; justify-content: space-between; align-items: center; }
-    .citations { font-size: 0.8rem; color: #8b949e; }
-    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .tag-sm { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; background: #21262d; color: #8b949e; }
-    .search { padding: 20px 40px 0; }
-    .search input { width: 100%; max-width: 500px; padding: 10px 16px; background: #21262d; border: 1px solid #30363d; border-radius: 8px; color: #e1e4e8; font-size: 0.9rem; outline: none; }
-    .search input:focus { border-color: #f78522; }
-    .count { padding: 10px 40px; font-size: 0.85rem; color: #8b949e; }
-    .progress { padding: 0 40px 20px; }
-    .progress-bar { background: #21262d; border-radius: 8px; height: 8px; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, #f78522, #388bfd); height: 100%; border-radius: 8px; transition: width 0.5s; }
-    .progress-label { font-size: 0.8rem; color: #8b949e; margin-top: 6px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-top: 14px; }
+    .citations { font-size: 0.8rem; color: #8b949e; min-width: 72px; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .tag-sm { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: #21262d; color: #8b949e; }
+    @media (max-width: 700px) {
+      header { padding: 16px; flex-direction: column; align-items: flex-start; }
+      .search, .filters, .count { padding-left: 16px; padding-right: 16px; }
+      .callout { margin-left: 16px; margin-right: 16px; }
+      .grid { grid-template-columns: 1fr; padding: 0 16px 24px; }
+      .card { padding: 16px; }
+      .card-footer { flex-direction: column; }
+      .tags { justify-content: flex-start; }
+    }
   </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>🎯 Interview Prep Papers</h1>
-      <span>LLM Efficiency · Fine-tuning · Serving · Quantization</span>
+      <h1>🎯 Apple Interview Prep</h1>
+      <span>Interviewer reading list · LLM efficiency · serving · quantization · evaluation</span>
     </div>
-    <a href="index.html">← Motion Papers</a>
+    <a href="index.html">← Back to knowledge home</a>
   </header>
 
   <div class="search">
-    <input type="text" id="searchInput" placeholder="Search papers..." oninput="filterPapers()">
+    <input type="text" id="searchInput" placeholder="Search papers, blogs, docs, GitHub repos, questions, answer angles..." oninput="filterPapers()">
+  </div>
+
+  <div class="callout">
+    This page is built from the Apple interviewer's reading list. I restored the missing <strong>blogs</strong>, <strong>docs</strong>, <strong>GitHub repos</strong>, and <strong>project pages</strong> too — not just arXiv papers.
+    Use tags like <strong>High Frequency</strong>, <strong>Core Concepts</strong>, <strong>Engineering</strong>, <strong>Extension</strong>, and content-type tags like <strong>Blog</strong> / <strong>Docs</strong> / <strong>GitHub</strong>.
   </div>
 
   <div class="filters" id="filterTags"></div>
@@ -67,70 +76,248 @@
         authors: "Edward J. Hu, Yelong Shen, Phillip Wallis et al.",
         venue: "ICLR 2022",
         arxiv: "2106.09685",
+        url: "",
         citations: 12000,
-        tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA into each layer. Reduces trainable parameters by 10,000x vs full fine-tuning with comparable performance on GPT-3 175B.",
-        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"],
-        questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation save memory and optimizer state?"],
-        answer: "Say that LoRA freezes the base model and learns low-rank updates on selected weight matrices, which drastically cuts trainable params, optimizer memory, and checkpoint size while preserving downstream quality.",
-        appleWhy: "Apple cares because adapter-style updates are practical for product iteration, personalization, and constrained training/inference environments."
+        tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA into selected layers, dramatically reducing trainable parameters and optimizer memory compared with full fine-tuning.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Paper", "Fine-tuning", "LoRA"],
+        questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation reduce memory and checkpoint size?"],
+        answer: "Say LoRA freezes the base model and only learns low-rank updates on a small subset of parameters. That slashes trainable params, optimizer state, and storage while often preserving task performance.",
+        appleWhy: "Adapter-style tuning is highly relevant when you care about rapid iteration, specialization, and efficiency constraints."
       },
       {
         title: "DoRA: Weight-Decomposed Low-Rank Adaptation",
         authors: "Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin et al.",
         venue: "ICML 2024",
         arxiv: "2402.09353",
+        url: "",
         citations: 800,
-        tldr: "Decomposes weight into magnitude + direction, applies LoRA only to direction component. More stable training and better learning capacity than standard LoRA.",
-        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"],
-        questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation save memory and optimizer state?"],
-        answer: "Say that LoRA freezes the base model and learns low-rank updates on selected weight matrices, which drastically cuts trainable params, optimizer memory, and checkpoint size while preserving downstream quality.",
-        appleWhy: "Apple cares because adapter-style updates are practical for product iteration, personalization, and constrained training/inference environments."
+        tldr: "Improves on LoRA by decomposing weights into magnitude and direction, then adapting mainly the directional component for better stability and expressiveness.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Paper", "Fine-tuning", "LoRA"],
+        questions: ["How does DoRA differ from LoRA?", "Why decompose weights into magnitude and direction?"],
+        answer: "Explain that DoRA separates weight magnitude from direction and applies low-rank adaptation to the more informative directional component. The pitch is better training behavior and capacity than plain LoRA.",
+        appleWhy: "Good follow-up question if they want to test whether you know the evolution of parameter-efficient tuning beyond the original paper."
+      },
+      {
+        title: "KV Caching Explained",
+        authors: "not-lain (Hugging Face Blog)",
+        venue: "Blog",
+        arxiv: "",
+        url: "https://huggingface.co/blog/not-lain/kv-caching",
+        citations: 0,
+        tldr: "Visual explanation of how autoregressive decoders reuse keys and values from previous tokens to avoid recomputing attention over the full prefix every step.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Blog", "KV Cache", "Explainer"],
+        questions: ["Why does KV cache make decoding faster?", "What is stored in KV cache and what trade-off does it introduce?"],
+        answer: "Say each new token can reuse previously computed keys and values, so it does not need to recompute attention for the whole prefix. This reduces compute per decode step, but grows memory roughly with sequence length, layers, and batch size.",
+        appleWhy: "KV caching is core to practical serving and on-device trade-offs where both latency and memory matter."
       },
       {
         title: "KVSharer: Efficient Inference via Layer-Wise Dissimilar KV Cache Sharing",
         authors: "Anonymous",
         venue: "arXiv 2024",
         arxiv: "2410.18517",
+        url: "",
         citations: 10,
-        tldr: "Shares KV cache across transformer layers by identifying dissimilar layers that can reuse each other's cache without accuracy loss. Reduces memory without retraining.",
-        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Engineering", "KV Cache", "Inference Efficiency"],
+        tldr: "Reuses KV cache across selected transformer layers to reduce memory without retraining, exploiting layer similarity structure while managing accuracy risk.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Paper", "Engineering", "KV Cache", "Inference Efficiency"],
         questions: ["How can cache sharing reduce memory without retraining?", "What risks come from reusing KV across layers?"],
-        answer: "Emphasize that the method exploits similarity structure across layers to reuse cached representations, trading a small accuracy risk for significant memory savings. Mention that layer compatibility and quality degradation are the key concerns.",
-        appleWhy: "This hits a classic Apple-style trade-off question: efficiency gains under strict memory budgets."
+        answer: "Emphasize the trade-off: the method reduces memory by sharing cached representations across layers that are compatible enough, but introduces potential accuracy degradation if reuse assumptions break.",
+        appleWhy: "This is exactly the kind of efficiency-versus-quality trade-off question that comes up in product-oriented ML systems interviews."
+      },
+      {
+        title: "LLM Quantization Basics",
+        authors: "Swastik Roy (Hugging Face Blog)",
+        venue: "Blog",
+        arxiv: "",
+        url: "https://huggingface.co/blog/royswastik/llm-quantization",
+        citations: 0,
+        tldr: "Primer on quantization fundamentals for LLMs, including symmetric vs asymmetric schemes, per-tensor vs per-channel quantization, and PTQ vs QAT trade-offs.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Blog", "Quantization", "Explainer"],
+        questions: ["What is the difference between PTQ and QAT?", "What are scale and zero-point doing in INT8 quantization?"],
+        answer: "Cover the basics clearly: PTQ quantizes after training, QAT simulates quantization during training; symmetric and asymmetric mappings affect representational flexibility; per-channel often preserves accuracy better than per-tensor.",
+        appleWhy: "If quantization comes up, these are the minimum concepts you need to answer cleanly."
+      },
+      {
+        title: "AWQ: Activation-Aware Weight Quantization",
+        authors: "Lei Mao (Blog)",
+        venue: "Blog",
+        arxiv: "",
+        url: "https://leimao.github.io/blog/AWQ-Activation-Aware-Weight-Quantization/",
+        citations: 0,
+        tldr: "Explains how AWQ uses activation statistics to find especially important weight channels and protect them during low-bit quantization.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Blog", "Quantization", "AWQ"],
+        questions: ["What is AWQ protecting during quantization?", "Why are activations useful for deciding which weights matter most?"],
+        answer: "Say AWQ identifies salient channels using observed activation patterns, then shields those channels from aggressive quantization. The key idea is that importance should be measured using actual model behavior, not all weights equally.",
+        appleWhy: "This shows whether you understand smarter quantization methods beyond the generic concept of low-bit compression."
+      },
+      {
+        title: "ParetoQ: Scaling Laws in Extremely Low-Bit LLM Quantization",
+        authors: "PyTorch Team (Blog)",
+        venue: "Blog",
+        arxiv: "",
+        url: "https://pytorch.org/blog/paretoq-scaling-laws-in-extremely-low-bit-llm-quantization/",
+        citations: 0,
+        tldr: "Explores scaling laws at extremely low bit-widths and argues that ternary representations can hit a better quality-size frontier than binary or naive 2-bit choices.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Blog", "Quantization", "Weight Compression", "Scaling Laws"],
+        questions: ["What happens when you push quantization below 2 bits?", "Why can ternary representations be attractive?"],
+        answer: "Frame it as a scaling-law story: the best compression regime is not always the obvious one, and ternary can give a stronger accuracy-vs-size trade-off at extreme bit budgets.",
+        appleWhy: "Good test of whether you can reason about compression regimes instead of memorizing one standard setup."
       },
       {
         title: "SqueezeLLM: Dense-and-Sparse Quantization",
         authors: "Sehoon Kim, Coleman Hooper, Amir Gholami et al.",
         venue: "ICML 2024",
         arxiv: "2306.07629",
+        url: "",
         citations: 350,
-        tldr: "Separates weights into dense (quantized to low-bit) and sparse (kept at high precision) components. Achieves better accuracy than uniform quantization at same bit-width.",
-        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "Weight Compression"],
+        tldr: "Separates weights into a dense low-bit quantized component plus a sparse high-precision correction, preserving the most error-sensitive weights.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Paper", "Quantization", "Weight Compression"],
         questions: ["How is SqueezeLLM different from uniform low-bit quantization?", "Why keep a sparse set of weights in high precision?"],
-        answer: "Say it decomposes the weight tensor into a dense low-bit component plus a sparse high-precision correction, so the most error-sensitive weights are preserved instead of forcing everything through the same quantizer.",
-        appleWhy: "This tests whether you understand quantization beyond slogans — especially the trade-off between compression and accuracy retention."
-      },
-      {
-        title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
-        authors: "Anonymous",
-        venue: "arXiv 2024",
-        arxiv: "2412.03594",
-        citations: 5,
-        tldr: "Identifies shared prefixes across a batch of requests and computes them once. Significant throughput gains for workloads with common system prompts or few-shot examples.",
-        tags: ["Serving", "Batching", "Inference Efficiency"]
+        answer: "Say it keeps a sparse correction in high precision so the most error-sensitive weights are preserved, instead of forcing every weight through the same low-bit approximation.",
+        appleWhy: "This tests whether you understand quantization as an accuracy-preserving systems technique, not just a memory trick."
       },
       {
         title: "QIGen: Generating Efficient Kernels for Quantized Inference on Large Language Models",
         authors: "Anonymous",
         venue: "arXiv 2023",
         arxiv: "2307.03738",
+        url: "",
         citations: 30,
-        tldr: "Auto-generates optimized CUDA kernels for quantized LLM inference. Bridges the gap between quantization research and deployment-ready performance.",
-        tags: ["Apple Interview", "Engineering", "Quantization", "Weight Compression", "Serving"],
+        tldr: "Auto-generates optimized CUDA kernels for quantized inference, bridging the gap between low-bit model formats and practical end-to-end acceleration.",
+        tags: ["Apple Interview", "Engineering", "Paper", "Quantization", "Weight Compression", "Serving"],
         questions: ["Why is quantization not enough by itself for speedups?", "What role do kernels play in practical low-bit inference?"],
-        answer: "Point out that model compression only becomes real latency/throughput improvement when the runtime has kernels that exploit the low-bit layout efficiently. Otherwise you may save memory but not see end-to-end speed gains.",
-        appleWhy: "Apple tends to care about systems reality, not just algorithmic ideas, so kernel-level execution matters."
+        answer: "Point out that compression only becomes latency or throughput improvement when the runtime has kernels that exploit the low-bit layout efficiently. Otherwise you may save memory without seeing real serving gains.",
+        appleWhy: "Apple interviews often care about systems reality, not just model-side ideas."
       },
+      {
+        title: "TorchAO: PyTorch Architecture Optimization",
+        authors: "PyTorch Team",
+        venue: "arXiv 2025",
+        arxiv: "2507.16099",
+        url: "",
+        citations: 0,
+        tldr: "PyTorch-native optimization stack for quantization, sparsity, and low-bit dtypes that integrates with torch.compile and production execution paths.",
+        tags: ["Apple Interview", "Engineering", "Paper", "Serving", "Quantization", "PyTorch"],
+        questions: ["What is TorchAO trying to unify?", "Why does systems integration matter for quantization and sparsity?"],
+        answer: "Describe it as a practical framework that makes low-bit and sparse techniques easier to carry from research into deployable runtime paths, instead of leaving them as isolated experiments.",
+        appleWhy: "It rewards candidates who can connect algorithmic ideas to production ML infrastructure."
+      },
+      {
+        title: "SGLang: Fast Serving Framework for LLMs and VLMs",
+        authors: "LMSYS Team",
+        venue: "Docs",
+        arxiv: "",
+        url: "https://docs.sglang.io/",
+        citations: 0,
+        tldr: "Serving framework with RadixAttention, cache reuse, continuous batching, and a frontend for building complex multi-call LLM applications.",
+        tags: ["Apple Interview", "Engineering", "Docs", "Serving", "Inference Efficiency"],
+        questions: ["What serving tricks improve throughput besides quantization?", "Why do prefix sharing and cache reuse matter in production?"],
+        answer: "Talk about continuous batching, prefix reuse, cache-aware scheduling, and reducing wasted prefill work. Serving wins often come from multiple coordinated systems ideas, not one trick.",
+        appleWhy: "This maps directly to production LLM systems where utilization and latency both matter."
+      },
+      {
+        title: "llama.cpp: LLM Inference in C/C++",
+        authors: "Georgi Gerganov et al.",
+        venue: "GitHub",
+        arxiv: "",
+        url: "https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#usage",
+        citations: 0,
+        tldr: "Lightweight runtime for running quantized LLMs on CPUs, Apple Silicon, and GPUs with minimal dependencies — a core path for local and on-device inference.",
+        tags: ["Apple Interview", "Engineering", "GitHub", "Serving", "On-device", "Quantization", "Apple Silicon"],
+        questions: ["Why is llama.cpp important for local or on-device inference?", "What makes it especially relevant for Apple Silicon?"],
+        answer: "Say it has become a practical reference runtime for efficient quantized local inference, especially on commodity CPUs and Apple Silicon, where memory efficiency and runtime simplicity matter a lot.",
+        appleWhy: "Anything on-device and Apple-Silicon-adjacent is unusually relevant here."
+      },
+      {
+        title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
+        authors: "Anonymous",
+        venue: "arXiv 2024",
+        arxiv: "2412.03594",
+        url: "",
+        citations: 5,
+        tldr: "Computes shared prefixes once across a request batch, improving throughput for workloads with common system prompts or few-shot exemplars.",
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Paper", "Engineering", "Serving", "Batching", "Inference Efficiency"],
+        questions: ["What kinds of workloads benefit from prefix sharing?", "How does batching interact with latency and throughput?"],
+        answer: "Explain that repeated system prompts, few-shot prefixes, and shared context make it possible to amortize prefill work across a batch. Also mention that larger batches can hurt tail latency if scheduled poorly.",
+        appleWhy: "Classic production trade-off territory: maximize throughput without ruining user experience."
+      },
+      {
+        title: "DataFlow: A Data-Centric Framework for LLM Dataset Management",
+        authors: "OpenDCAI",
+        venue: "GitHub",
+        arxiv: "",
+        url: "https://github.com/OpenDCAI/DataFlow?tab=readme-ov-file",
+        citations: 0,
+        tldr: "Toolkit for LLM dataset curation, including filtering, deduplication, quality scoring, and mixture management across different data types.",
+        tags: ["Apple Interview", "Extension", "GitHub", "Evaluation", "Data", "Tooling"],
+        questions: ["How do you improve a model besides changing architecture?", "Why does dataset curation matter?"],
+        answer: "Stress that filtering, deduplication, mixture design, and data quality control often move model quality as much as architecture tweaks do. Data is one of the highest-leverage parts of the stack.",
+        appleWhy: "Shows that you understand model quality as a systems problem, not just an architecture problem."
+      },
+      {
+        title: "Open LLM Leaderboard",
+        authors: "Vellum AI",
+        venue: "Leaderboard",
+        arxiv: "",
+        url: "https://www.vellum.ai/open-llm-leaderboard?utm_source=google&utm_medium=organic",
+        citations: 0,
+        tldr: "Aggregated view of open-source LLM benchmark performance, useful for comparing models, sizes, and quantization variants across common tasks.",
+        tags: ["Apple Interview", "Extension", "Leaderboard", "Evaluation", "Benchmarks"],
+        questions: ["How should you compare LLMs fairly?", "What can leaderboards miss?"],
+        answer: "Mention benchmark choice, contamination risk, prompt formatting, evaluation noise, and deployment constraints. A leaderboard is useful, but not the same thing as product readiness.",
+        appleWhy: "Shows you can think critically about evaluation rather than blindly quoting scores."
+      },
+      {
+        title: "AuditDM: Auditing Diffusion Model Memorization",
+        authors: "AuditDM Team",
+        venue: "Project Page",
+        arxiv: "",
+        url: "https://auditdm.github.io/",
+        citations: 0,
+        tldr: "Framework for detecting and quantifying memorization in diffusion models, highlighting privacy and data leakage risks in generative systems.",
+        tags: ["Apple Interview", "Extension", "Project Page", "Evaluation", "Privacy", "Diffusion"],
+        questions: ["Why do memorization audits matter?", "How do privacy concerns show up in generative models?"],
+        answer: "Talk about unintended retention of training examples, privacy leakage, and why safety evaluation should go beyond benchmark accuracy to include memorization and exposure risks.",
+        appleWhy: "Especially relevant for consumer products and companies that care deeply about privacy commitments."
+      },
+      {
+        title: "Apple Foundation Models (AFM) Technical Report",
+        authors: "Apple ML Research",
+        venue: "Tech Report 2025",
+        arxiv: "",
+        url: "https://fredhohman.com/papers/afm-2025",
+        citations: 0,
+        tldr: "Overview of Apple's foundation models and deployment strategy, including on-device/server splits, adapters for user-facing features, and hardware-aware deployment constraints.",
+        tags: ["Apple Interview", "Extension", "Tech Report", "Apple", "On-device", "Apple Silicon"],
+        questions: ["What stands out technically about Apple's foundation model strategy?", "Why is on-device execution such a big deal?"],
+        answer: "Focus on the product-driven balance among privacy, latency, hardware limits, and user experience. Apple's strategy is not just model quality — it's deployment under tight product constraints.",
+        appleWhy: "This is the most directly Apple-specific item on the list."
+      },
+      {
+        title: "Qwen3 Technical Report",
+        authors: "Qwen Team (Alibaba)",
+        venue: "arXiv 2025",
+        arxiv: "2505.09388",
+        url: "",
+        citations: 0,
+        tldr: "Technical report for the Qwen3 family, covering dense and MoE variants, reasoning behavior, multilingual ability, and systems trade-offs.",
+        tags: ["Apple Interview", "Extension", "Paper", "Tech Report", "MoE", "Reasoning"],
+        questions: ["When reading a modern tech report, what should you extract quickly?", "Why do model family design choices matter for product trade-offs?"],
+        answer: "Look for architecture family, context length, serving implications, reasoning behavior, deployment cost, and product fit. The goal is not memorizing every table — it is building a comparative mental model.",
+        appleWhy: "Shows that you can synthesize trends across model families instead of studying each paper in isolation."
+      },
+      {
+        title: "Gemma 3 Technical Report",
+        authors: "Google DeepMind",
+        venue: "arXiv 2025",
+        arxiv: "2503.19786",
+        url: "",
+        citations: 0,
+        tldr: "Describes lightweight multimodal models with long context and relatively deployable sizes, making them useful comparison points for practical product integration.",
+        tags: ["Apple Interview", "Extension", "Paper", "Tech Report", "Multimodal", "Google"],
+        questions: ["What makes Gemma 3 notable from a deployment perspective?", "Why do smaller multimodal models matter?"],
+        answer: "Say it is interesting because it pushes multimodal capability into sizes that are much more deployable, which makes hardware and product integration questions more concrete.",
+        appleWhy: "Helpful comparative context for how different labs balance size, capability, and deployment."
+      }
     ];
 
     const allTags = [...new Set(papers.flatMap(p => p.tags))].sort();
@@ -139,7 +326,7 @@
     function renderTags() {
       const el = document.getElementById('filterTags');
       el.innerHTML = allTags.map(t =>
-        `<span class="tag ${activeTag===t?'active':''}" onclick="toggleTag('${t}')">${t}</span>`
+        `<span class="tag ${activeTag===t?'active':''}" onclick="toggleTag('${t.replace(/'/g, "\\'")}')">${t}</span>`
       ).join('');
     }
 
@@ -149,34 +336,46 @@
       filterPapers();
     }
 
+    function getLink(p) {
+      if (p.arxiv) return `https://arxiv.org/abs/${p.arxiv}`;
+      return p.url || '#';
+    }
+
     function filterPapers() {
       const q = document.getElementById('searchInput').value.toLowerCase();
       const filtered = papers.filter(p => {
         const matchTag = !activeTag || p.tags.includes(activeTag);
-        const matchSearch = !q || p.title.toLowerCase().includes(q) || p.tldr.toLowerCase().includes(q) || p.tags.join(' ').toLowerCase().includes(q);
+        const matchSearch = !q ||
+          p.title.toLowerCase().includes(q) ||
+          p.tldr.toLowerCase().includes(q) ||
+          p.tags.join(' ').toLowerCase().includes(q) ||
+          p.venue.toLowerCase().includes(q) ||
+          (p.questions && p.questions.join(' ').toLowerCase().includes(q)) ||
+          (p.answer && p.answer.toLowerCase().includes(q)) ||
+          (p.appleWhy && p.appleWhy.toLowerCase().includes(q));
         return matchTag && matchSearch;
       });
       renderPapers(filtered);
     }
 
     function renderPapers(list) {
-      document.getElementById('countLabel').textContent = `${list.length} paper${list.length!==1?'s':''}`;
+      document.getElementById('countLabel').textContent = `${list.length} item${list.length!==1?'s':''}`;
       document.getElementById('paperGrid').innerHTML = list.map(p => `
         <div class="card">
           <div class="card-header">
             <div></div>
             <span class="venue">${p.venue}</span>
           </div>
-          <h3><a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">${p.title}</a></h3>
+          <h3><a href="${getLink(p)}" target="_blank">${p.title}</a></h3>
           <div class="authors">${p.authors}</div>
           <div class="tldr">${p.tldr}</div>
-          ${p.questions ? `<div class="qa">
+          <div class="qa">
             <div class="qa-block"><strong>Possible questions</strong><br>${p.questions.join('<br>')}</div>
-            <div class="qa-block"><strong>How to answer</strong><br>${p.answer || ''}</div>
-            <div class="qa-block"><strong>Why Apple may care</strong><br>${p.appleWhy || ''}</div>
-          </div>` : ''}
+            <div class="qa-block"><strong>How to answer</strong><br>${p.answer}</div>
+            <div class="qa-block"><strong>Why Apple may care</strong><br>${p.appleWhy}</div>
+          </div>
           <div class="card-footer">
-            <span class="citations">📊 ${p.citations.toLocaleString()} citations</span>
+            <span class="citations">${p.citations ? `📊 ${p.citations.toLocaleString()} citations` : ''}</span>
             <div class="tags">${p.tags.map(t => `<span class="tag-sm">${t}</span>`).join('')}</div>
           </div>
         </div>

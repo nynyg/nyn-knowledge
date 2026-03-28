@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Prep Papers</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e4e8; min-height: 100vh; }
+    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header span { font-size: 0.85rem; color: #8b949e; }
+    header a { font-size: 0.85rem; color: #388bfd; text-decoration: none; }
+    .filters { padding: 20px 40px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .tag { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #8b949e; transition: all 0.2s; }
+    .tag:hover, .tag.active { background: #f7852222; border-color: #f78522; color: #f78522; }
+    .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
+    .card:hover { border-color: #f78522; }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .venue { font-size: 0.75rem; background: #f7852222; color: #f78522; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+    .card h3 { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .card h3 a { color: #e1e4e8; text-decoration: none; }
+    .card h3 a:hover { color: #f78522; }
+    .authors { font-size: 0.8rem; color: #8b949e; margin-bottom: 8px; }
+    .tldr { font-size: 0.85rem; color: #c9d1d9; line-height: 1.5; margin-bottom: 12px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .citations { font-size: 0.8rem; color: #8b949e; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag-sm { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; background: #21262d; color: #8b949e; }
+    .search { padding: 20px 40px 0; }
+    .search input { width: 100%; max-width: 500px; padding: 10px 16px; background: #21262d; border: 1px solid #30363d; border-radius: 8px; color: #e1e4e8; font-size: 0.9rem; outline: none; }
+    .search input:focus { border-color: #f78522; }
+    .count { padding: 10px 40px; font-size: 0.85rem; color: #8b949e; }
+    .progress { padding: 0 40px 20px; }
+    .progress-bar { background: #21262d; border-radius: 8px; height: 8px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, #f78522, #388bfd); height: 100%; border-radius: 8px; transition: width 0.5s; }
+    .progress-label { font-size: 0.8rem; color: #8b949e; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🎯 Interview Prep Papers</h1>
+      <span>LLM Efficiency · Fine-tuning · Serving · Quantization</span>
+    </div>
+    <a href="index.html">← Motion Papers</a>
+  </header>
+
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Search papers..." oninput="filterPapers()">
+  </div>
+
+  <div class="filters" id="filterTags"></div>
+  <div class="count" id="countLabel"></div>
+  <div class="grid" id="paperGrid"></div>
+
+  <script>
+    const papers = [
+      {
+        title: "LoRA: Low-Rank Adaptation of Large Language Models",
+        authors: "Edward J. Hu, Yelong Shen, Phillip Wallis et al.",
+        venue: "ICLR 2022",
+        arxiv: "2106.09685",
+        citations: 12000,
+        tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA into each layer. Reduces trainable parameters by 10,000x vs full fine-tuning with comparable performance on GPT-3 175B.",
+        tags: ["Fine-tuning", "LoRA"]
+      },
+      {
+        title: "DoRA: Weight-Decomposed Low-Rank Adaptation",
+        authors: "Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin et al.",
+        venue: "ICML 2024",
+        arxiv: "2402.09353",
+        citations: 800,
+        tldr: "Decomposes weight into magnitude + direction, applies LoRA only to direction component. More stable training and better learning capacity than standard LoRA.",
+        tags: ["Fine-tuning", "LoRA"]
+      },
+      {
+        title: "KVSharer: Efficient Inference via Layer-Wise Dissimilar KV Cache Sharing",
+        authors: "Anonymous",
+        venue: "arXiv 2024",
+        arxiv: "2410.18517",
+        citations: 10,
+        tldr: "Shares KV cache across transformer layers by identifying dissimilar layers that can reuse each other's cache without accuracy loss. Reduces memory without retraining.",
+        tags: ["KV Cache", "Inference Efficiency"]
+      },
+      {
+        title: "SqueezeLLM: Dense-and-Sparse Quantization",
+        authors: "Sehoon Kim, Coleman Hooper, Amir Gholami et al.",
+        venue: "ICML 2024",
+        arxiv: "2306.07629",
+        citations: 350,
+        tldr: "Separates weights into dense (quantized to low-bit) and sparse (kept at high precision) components. Achieves better accuracy than uniform quantization at same bit-width.",
+        tags: ["Quantization", "Weight Compression"]
+      },
+      {
+        title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
+        authors: "Anonymous",
+        venue: "arXiv 2024",
+        arxiv: "2412.03594",
+        citations: 5,
+        tldr: "Identifies shared prefixes across a batch of requests and computes them once. Significant throughput gains for workloads with common system prompts or few-shot examples.",
+        tags: ["Serving", "Batching", "Inference Efficiency"]
+      },
+      {
+        title: "QIGen: Generating Efficient Kernels for Quantized Inference on Large Language Models",
+        authors: "Anonymous",
+        venue: "arXiv 2023",
+        arxiv: "2307.03738",
+        citations: 30,
+        tldr: "Auto-generates optimized CUDA kernels for quantized LLM inference. Bridges the gap between quantization research and deployment-ready performance.",
+        tags: ["Quantization", "Weight Compression", "Serving"]
+      },
+    ];
+
+    const allTags = [...new Set(papers.flatMap(p => p.tags))].sort();
+    let activeTag = null;
+
+    function renderTags() {
+      const el = document.getElementById('filterTags');
+      el.innerHTML = allTags.map(t =>
+        `<span class="tag ${activeTag===t?'active':''}" onclick="toggleTag('${t}')">${t}</span>`
+      ).join('');
+    }
+
+    function toggleTag(tag) {
+      activeTag = activeTag === tag ? null : tag;
+      renderTags();
+      filterPapers();
+    }
+
+    function filterPapers() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = papers.filter(p => {
+        const matchTag = !activeTag || p.tags.includes(activeTag);
+        const matchSearch = !q || p.title.toLowerCase().includes(q) || p.tldr.toLowerCase().includes(q) || p.tags.join(' ').toLowerCase().includes(q);
+        return matchTag && matchSearch;
+      });
+      renderPapers(filtered);
+    }
+
+    function renderPapers(list) {
+      document.getElementById('countLabel').textContent = `${list.length} paper${list.length!==1?'s':''}`;
+      document.getElementById('paperGrid').innerHTML = list.map(p => `
+        <div class="card">
+          <div class="card-header">
+            <div></div>
+            <span class="venue">${p.venue}</span>
+          </div>
+          <h3><a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">${p.title}</a></h3>
+          <div class="authors">${p.authors}</div>
+          <div class="tldr">${p.tldr}</div>
+          <div class="card-footer">
+            <span class="citations">📊 ${p.citations.toLocaleString()} citations</span>
+            <div class="tags">${p.tags.map(t => `<span class="tag-sm">${t}</span>`).join('')}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderTags();
+    filterPapers();
+  </script>
+</body>
+</html>

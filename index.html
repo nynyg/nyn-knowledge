@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nan's Paper Library</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e4e8; min-height: 100vh; }
+    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 40px; }
+    header h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; }
+    .tabs { display: flex; gap: 4px; }
+    .tab { padding: 8px 20px; border-radius: 8px 8px 0 0; font-size: 0.9rem; cursor: pointer; border: 1px solid #30363d; border-bottom: none; background: #21262d; color: #8b949e; transition: all 0.2s; }
+    .tab.active[data-tab="motion"] { background: #161b22; color: #388bfd; border-color: #388bfd; }
+    .tab.active[data-tab="interview"] { background: #161b22; color: #f78522; border-color: #f78522; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .filters { padding: 20px 40px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .tag { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #8b949e; transition: all 0.2s; }
+    #motion-tab .tag:hover, #motion-tab .tag.active { background: #388bfd22; border-color: #388bfd; color: #388bfd; }
+    #interview-tab .tag:hover, #interview-tab .tag.active { background: #f7852222; border-color: #f78522; color: #f78522; }
+    .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
+    #motion-tab .card:hover { border-color: #388bfd; }
+    #interview-tab .card:hover { border-color: #f78522; }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .venue { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+    #motion-tab .venue { background: #388bfd22; color: #388bfd; }
+    #interview-tab .venue { background: #f7852222; color: #f78522; }
+    .card h3 { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .card h3 a { color: #e1e4e8; text-decoration: none; }
+    .card h3 a:hover { color: #8b949e; }
+    .authors { font-size: 0.8rem; color: #8b949e; margin-bottom: 8px; }
+    .tldr { font-size: 0.85rem; color: #c9d1d9; line-height: 1.5; margin-bottom: 12px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .citations { font-size: 0.8rem; color: #8b949e; }
+    .tag-sm { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; background: #21262d; color: #8b949e; }
+    .tag-sm.category-tag { background: #f7852233; color: #f78522; font-weight: 600; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .search { padding: 20px 40px 0; }
+    .search input { width: 100%; max-width: 500px; padding: 10px 16px; background: #21262d; border: 1px solid #30363d; border-radius: 8px; color: #e1e4e8; font-size: 0.9rem; outline: none; }
+    .count { padding: 10px 40px; font-size: 0.85rem; color: #8b949e; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📄 Nan's Paper Library</h1>
+    <div class="tabs">
+      <div class="tab active" data-tab="motion" onclick="switchTab('motion')">🏃 Motion & Vision</div>
+      <div class="tab" data-tab="interview" onclick="switchTab('interview')">🎯 Interview Prep</div>
+    </div>
+  </header>
+
+  <!-- Motion Tab -->
+  <div class="tab-content active" id="motion-tab">
+    <div class="search"><input type="text" id="motionSearch" placeholder="Search papers..." oninput="filterPapers('motion')"></div>
+    <div class="filters" id="motionTags"></div>
+    <div class="count" id="motionCount"></div>
+    <div class="grid" id="motionGrid"></div>
+  </div>
+
+  <!-- Interview Tab -->
+  <div class="tab-content" id="interview-tab">
+    <div class="search"><input type="text" id="interviewSearch" placeholder="Search Apple interview prep papers, tags, topics..." oninput="filterPapers('interview')"></div>
+    <div class="count" style="padding-top: 14px;">Curated from the reading list your Apple interviewer sent — use tags to switch between core concepts, high-frequency questions, engineering systems, and broader tech-report extensions.</div>
+    <div class="filters" id="interviewTags"></div>
+    <div class="count" id="interviewCount"></div>
+    <div class="grid" id="interviewGrid"></div>
+  </div>
+
+  <script>
+    const data = {
+      motion: [
+        {
+          title: "Human Motion Diffusion Model (MDM)",
+          authors: "Guy Tevet, Sigal Raab, Brian Gordon et al.",
+          venue: "ICLR 2023", arxiv: "2209.14916", citations: 1475,
+          tldr: "First strong diffusion baseline for text-to-motion. Clean transformer-based diffusion pipeline working directly on joint rotations. Became the standard baseline in the field.",
+          tags: ["Text-to-Motion", "Diffusion", "Foundation"]
+        },
+        {
+          title: "T2M-GPT: Generating Human Motion from Textual Descriptions with Discrete Representations",
+          authors: "Jianrong Zhang, Yangsong Zhang, Xiaodong Cun et al.",
+          venue: "CVPR 2023", arxiv: "2301.06052", citations: 711,
+          tldr: "VQ-VAE encodes motion into discrete tokens, GPT autoregressively generates them from text. CNN-based VQ-VAE + corruption strategy beats more complex diffusion methods on HumanML3D.",
+          tags: ["Text-to-Motion", "VQ-VAE", "Autoregressive", "Foundation"]
+        },
+        {
+          title: "HUMANISE: Language-conditioned Human Motion Generation in 3D Scenes",
+          authors: "Zan Wang, Yixin Chen, Tengyu Liu et al.",
+          venue: "NeurIPS 2022", arxiv: "2210.09729", citations: 191,
+          tldr: "Given text + 3D scene, generates physically plausible motion respecting scene geometry. Uses SDF for collision constraints, CLIP for text, PointNet for scene.",
+          tags: ["Human-Scene Interaction", "Text-to-Motion", "3D Scene"]
+        },
+        {
+          title: "Guided Motion Diffusion for Controllable Human Motion Synthesis",
+          authors: "Korrawe Karunratanakul, Konpat Preechakul, Supasorn Suwajanakorn, Siyu Tang",
+          venue: "ICCV 2023", arxiv: "2305.12577", citations: 18,
+          tldr: "Adds spatial constraints (trajectory, joint positions, foot contact) to a pretrained diffusion model at inference time via gradient guidance — no retraining needed.",
+          tags: ["Text-to-Motion", "Diffusion", "Controllable"]
+        },
+      ],
+      interview: [
+        // LoRA fine-tuning
+        {
+          title: "LoRA: Low-Rank Adaptation of Large Language Models",
+          authors: "Edward J. Hu, Yelong Shen, Phillip Wallis et al.",
+          venue: "ICLR 2022", arxiv: "2106.09685", url: "", citations: 12000,
+          category: "LoRA fine-tuning",
+          tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA. Reduces trainable parameters by 10,000x vs full fine-tuning with comparable performance.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"]
+        },
+        {
+          title: "DoRA: Weight-Decomposed Low-Rank Adaptation",
+          authors: "Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin et al.",
+          venue: "ICML 2024", arxiv: "2402.09353", url: "", citations: 800,
+          category: "LoRA fine-tuning",
+          tldr: "Decomposes weight into magnitude + direction, applies LoRA only to direction. More stable training and better learning capacity than standard LoRA.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"]
+        },
+        // KV caching and sharing
+        {
+          title: "KV Caching Explained",
+          authors: "not-lain (Hugging Face Blog)",
+          venue: "Blog", arxiv: "", url: "https://huggingface.co/blog/not-lain/kv-caching", citations: 0,
+          category: "KV caching and sharing",
+          tldr: "Visual walkthrough of how KV caching avoids redundant key/value recomputation in autoregressive transformers, covering multi-head and grouped-query variants.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "KV Cache", "Explainer"]
+        },
+        {
+          title: "KVSharer: Efficient Inference via Layer-Wise Dissimilar KV Cache Sharing",
+          authors: "Anonymous",
+          venue: "arXiv 2024", arxiv: "2410.18517", url: "", citations: 10,
+          category: "KV caching and sharing",
+          tldr: "Shares KV cache across transformer layers by identifying dissimilar layers that can reuse each other's cache without accuracy loss. Reduces memory without retraining.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Engineering", "KV Cache", "Inference Efficiency"]
+        },
+        // Activation quantization
+        {
+          title: "LLM Quantization Basics",
+          authors: "Swastik Roy (Hugging Face Blog)",
+          venue: "Blog", arxiv: "", url: "https://huggingface.co/blog/royswastik/llm-quantization", citations: 0,
+          category: "Activation quantization",
+          tldr: "Primer on quantization fundamentals for LLMs — covers symmetric/asymmetric schemes, per-tensor vs per-channel, and the trade-offs between PTQ and QAT approaches.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "Explainer"]
+        },
+        {
+          title: "AWQ: Activation-Aware Weight Quantization",
+          authors: "Lei Mao (Blog)",
+          venue: "Blog", arxiv: "", url: "https://leimao.github.io/blog/AWQ-Activation-Aware-Weight-Quantization/", citations: 0,
+          category: "Activation quantization",
+          tldr: "Explains how AWQ uses activation distributions to identify salient weight channels and protect them during quantization, achieving better accuracy than naive round-to-nearest at low bit-widths.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "AWQ"]
+        },
+        // Weight compression
+        {
+          title: "ParetoQ: Scaling Laws in Extremely Low-Bit LLM Quantization",
+          authors: "PyTorch Team (Blog)",
+          venue: "Blog", arxiv: "", url: "https://pytorch.org/blog/paretoq-scaling-laws-in-extremely-low-bit-llm-quantization/", citations: 0,
+          category: "Weight compression",
+          tldr: "Derives scaling laws showing that at sub-2-bit quantization, ternary (1.58-bit) representations hit the Pareto frontier, outperforming both binary and 2-bit schemes for a given model size budget.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "Weight Compression", "Scaling Laws"]
+        },
+        {
+          title: "SqueezeLLM: Dense-and-Sparse Quantization",
+          authors: "Sehoon Kim, Coleman Hooper, Amir Gholami et al.",
+          venue: "ICML 2024", arxiv: "2306.07629", url: "", citations: 350,
+          category: "Weight compression",
+          tldr: "Separates weights into dense (quantized) and sparse (high precision) components. Better accuracy than uniform quantization at same bit-width.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "Weight Compression"]
+        },
+        {
+          title: "QIGen: Generating Efficient Kernels for Quantized Inference on Large Language Models",
+          authors: "Anonymous",
+          venue: "arXiv 2023", arxiv: "2307.03738", url: "", citations: 30,
+          category: "Weight compression",
+          tldr: "Auto-generates optimized CUDA kernels for quantized LLM inference. Bridges the gap between quantization research and deployment-ready performance.",
+          tags: ["Apple Interview", "Engineering", "Quantization", "Weight Compression", "Serving"]
+        },
+        // On-device/server deployment
+        {
+          title: "TorchAO: PyTorch Architecture Optimization",
+          authors: "PyTorch Team",
+          venue: "arXiv 2025", arxiv: "2507.16099", url: "", citations: 0,
+          category: "On-device/server deployment",
+          tldr: "Unified PyTorch-native library for quantization, sparsity, and low-bit dtypes that composes with torch.compile for near-hardware-peak inference and training performance.",
+          tags: ["Apple Interview", "Engineering", "Serving", "Quantization", "PyTorch"]
+        },
+        {
+          title: "SGLang: Fast Serving Framework for LLMs and VLMs",
+          authors: "LMSYS Team",
+          venue: "Docs", arxiv: "", url: "https://docs.sglang.io/", citations: 0,
+          category: "On-device/server deployment",
+          tldr: "High-throughput serving engine with RadixAttention for automatic KV cache reuse, continuous batching, and a frontend DSL for complex multi-call LLM programs.",
+          tags: ["Apple Interview", "Engineering", "Serving", "Inference Efficiency"]
+        },
+        {
+          title: "llama.cpp: LLM Inference in C/C++",
+          authors: "Georgi Gerganov et al.",
+          venue: "GitHub", arxiv: "", url: "https://github.com/ggml-org/llama.cpp", citations: 0,
+          category: "On-device/server deployment",
+          tldr: "Lightweight C/C++ runtime for running quantized LLMs on CPUs, Apple Silicon, and GPUs with minimal dependencies — the backbone of most local/on-device LLM deployments.",
+          tags: ["Apple Interview", "Engineering", "Serving", "On-device", "Quantization", "Apple Silicon"]
+        },
+        // Batching
+        {
+          title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
+          authors: "Anonymous",
+          venue: "arXiv 2024", arxiv: "2412.03594", url: "", citations: 5,
+          category: "Batching",
+          tldr: "Identifies shared prefixes across batch requests and computes them once. Significant throughput gains for workloads with common system prompts.",
+          tags: ["Apple Interview", "Core Concepts", "High Frequency", "Engineering", "Serving", "Batching", "Inference Efficiency"]
+        },
+        // LLM dataset and evaluation
+        {
+          title: "DataFlow: A Data-Centric Framework for LLM Dataset Management",
+          authors: "OpenDCAI",
+          venue: "GitHub", arxiv: "", url: "https://github.com/OpenDCAI/DataFlow", citations: 0,
+          category: "LLM dataset and evaluation",
+          tldr: "Open-source toolkit for LLM training data curation — provides operators for filtering, deduplication, quality scoring, and mixing across text/code/multimodal datasets.",
+          tags: ["Apple Interview", "Extension", "Evaluation", "Data", "Tooling"]
+        },
+        {
+          title: "Open LLM Leaderboard",
+          authors: "Vellum AI",
+          venue: "Leaderboard", arxiv: "", url: "https://www.vellum.ai/open-llm-leaderboard", citations: 0,
+          category: "LLM dataset and evaluation",
+          tldr: "Aggregated leaderboard tracking open-source LLM performance across standard benchmarks, making it easy to compare model families, sizes, and quantization variants.",
+          tags: ["Apple Interview", "Extension", "Evaluation", "Benchmarks"]
+        },
+        // Model capabilities analysis
+        {
+          title: "AuditDM: Auditing Diffusion Model Memorization",
+          authors: "AuditDM Team",
+          venue: "Project Page", arxiv: "", url: "https://auditdm.github.io/", citations: 0,
+          category: "Model capabilities analysis",
+          tldr: "Framework for systematically detecting and quantifying memorization in diffusion models, helping assess privacy risks and training data leakage in generative AI.",
+          tags: ["Apple Interview", "Extension", "Evaluation", "Privacy", "Diffusion"]
+        },
+        // SOTA tech reports
+        {
+          title: "Apple Foundation Models (AFM) Technical Report",
+          authors: "Apple ML Research",
+          venue: "Tech Report 2025", arxiv: "", url: "https://fredhohman.com/papers/afm-2025", citations: 0,
+          category: "SOTA tech reports",
+          tldr: "Details Apple's on-device and server foundation models powering Apple Intelligence — covers responsible training, adapters for features like summarization and Genmoji, and on-device deployment on the Neural Engine.",
+          tags: ["Apple Interview", "Extension", "Tech Report", "On-device", "Apple", "Apple Silicon"]
+        },
+        {
+          title: "Qwen3 Technical Report",
+          authors: "Qwen Team (Alibaba)",
+          venue: "arXiv 2025", arxiv: "2505.09388", url: "", citations: 0,
+          category: "SOTA tech reports",
+          tldr: "Describes the Qwen3 family including dense and MoE variants, with seamless switching between thinking and non-thinking modes, achieving SOTA across reasoning, coding, and multilingual benchmarks.",
+          tags: ["Apple Interview", "Extension", "Tech Report", "MoE", "Reasoning"]
+        },
+        {
+          title: "Gemma 3 Technical Report",
+          authors: "Google DeepMind",
+          venue: "arXiv 2025", arxiv: "2503.19786", url: "", citations: 0,
+          category: "SOTA tech reports",
+          tldr: "Lightweight multimodal models (1B–27B) with a 128K context window, natively handling text, images, and video. The 27B model rivals much larger models while running on a single GPU/TPU.",
+          tags: ["Apple Interview", "Extension", "Tech Report", "Multimodal", "Google"]
+        },
+      ]
+    };
+
+    const activeTags = { motion: null, interview: null };
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById(`${tab}-tab`).classList.add('active');
+    }
+
+    function renderTags(section) {
+      const tags = [...new Set(data[section].flatMap(p => p.tags))].sort();
+      document.getElementById(`${section}Tags`).innerHTML = tags.map(t =>
+        `<span class="tag ${activeTags[section]===t?'active':''}" onclick="toggleTag('${section}','${t}')">${t}</span>`
+      ).join('');
+    }
+
+    function toggleTag(section, tag) {
+      activeTags[section] = activeTags[section] === tag ? null : tag;
+      renderTags(section);
+      filterPapers(section);
+    }
+
+    function filterPapers(section) {
+      const q = document.getElementById(`${section}Search`).value.toLowerCase();
+      const filtered = data[section].filter(p => {
+        const matchTag = !activeTags[section] || p.tags.includes(activeTags[section]);
+        const matchSearch = !q || p.title.toLowerCase().includes(q) || p.tldr.toLowerCase().includes(q) || p.tags.join(' ').toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q));
+        return matchTag && matchSearch;
+      });
+      document.getElementById(`${section}Count`).textContent = `${filtered.length} paper${filtered.length!==1?'s':''}`;
+      document.getElementById(`${section}Grid`).innerHTML = filtered.map(p => {
+        const link = p.arxiv ? `https://arxiv.org/abs/${p.arxiv}` : (p.url || '#');
+        const categoryTag = p.category ? `<span class="tag-sm category-tag">${p.category}</span>` : '';
+        const citationStr = p.citations ? `<span class="citations">📊 ${p.citations.toLocaleString()} citations</span>` : `<span class="citations"></span>`;
+        return `
+        <div class="card">
+          <div class="card-header"><div></div><span class="venue">${p.venue}</span></div>
+          <h3><a href="${link}" target="_blank">${p.title}</a></h3>
+          <div class="authors">${p.authors}</div>
+          <div class="tldr">${p.tldr}</div>
+          <div class="card-footer">
+            ${citationStr}
+            <div class="tags">${categoryTag}${p.tags.map(t => `<span class="tag-sm">${t}</span>`).join('')}</div>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    // Init both sections
+    renderTags('motion'); filterPapers('motion');
+    renderTags('interview'); filterPapers('interview');
+  </script>
+</body>
+</html>

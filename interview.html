@@ -31,6 +31,11 @@
     .card h3 a:hover { color: #c2410c; }
     .authors { font-size: 0.84rem; color: #6b7280; margin-bottom: 8px; }
     .tldr { font-size: 0.9rem; color: #374151; line-height: 1.58; margin-bottom: 12px; }
+    .figure-wrap { margin: 10px 0 14px; }
+    .figure-link { display: block; border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; background: #f9fafb; }
+    .figure-link:hover { border-color: #fdba74; }
+    .figure-link img { display: block; width: 100%; height: auto; }
+    .figure-caption { padding: 10px 12px; font-size: 0.8rem; color: #6b7280; background: #fff; border-top: 1px solid #e5e7eb; }
     .qa { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f3f4f6; display: grid; gap: 10px; }
     .qa-block { font-size: 0.84rem; line-height: 1.58; color: #374151; }
     .qa-block strong { display: inline-block; margin-bottom: 4px; color: #111827; }
@@ -94,7 +99,9 @@
         tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA into selected layers, dramatically reducing trainable parameters and optimizer memory compared with full fine-tuning.",
         questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation reduce memory and checkpoint size?"],
         answer: "Say LoRA freezes the base model and only learns low-rank updates on a small subset of parameters. That slashes trainable params, optimizer state, and storage while often preserving task performance.",
-        appleWhy: "Adapter-style tuning is highly relevant when you care about rapid iteration, specialization, and efficiency constraints."
+        appleWhy: "Adapter-style tuning is highly relevant when you care about rapid iteration, specialization, and efficiency constraints.",
+        figure: "./assets/figures/lora.svg",
+        figureCaption: "Simplified study figure: LoRA freezes W and trains a low-rank update ΔW = BA."
       },
       {
         title: "DoRA: Weight-Decomposed Low-Rank Adaptation",
@@ -124,7 +131,9 @@
         tldr: "Visual explanation of how autoregressive decoders reuse keys and values from previous tokens to avoid recomputing attention over the full prefix every step.",
         questions: ["Why does KV cache make decoding faster?", "What is stored in KV cache and what trade-off does it introduce?"],
         answer: "Say each new token can reuse previously computed keys and values, so it does not need to recompute attention for the whole prefix. This reduces compute per decode step, but grows memory roughly with sequence length, layers, and batch size.",
-        appleWhy: "KV caching is core to practical serving and on-device trade-offs where both latency and memory matter."
+        appleWhy: "KV caching is core to practical serving and on-device trade-offs where both latency and memory matter.",
+        figure: "./assets/figures/kv-cache.svg",
+        figureCaption: "Simplified study figure: cached K/V avoids recomputing the whole prefix during decoding."
       },
       {
         title: "KVSharer: Efficient Inference via Layer-Wise Dissimilar KV Cache Sharing",
@@ -154,7 +163,9 @@
         tldr: "Primer on quantization fundamentals for LLMs, including symmetric vs asymmetric schemes, per-tensor vs per-channel quantization, and PTQ vs QAT trade-offs.",
         questions: ["What is the difference between PTQ and QAT?", "What are scale and zero-point doing in INT8 quantization?"],
         answer: "Cover the basics clearly: PTQ quantizes after training, QAT simulates quantization during training; symmetric and asymmetric mappings affect representational flexibility; per-channel often preserves accuracy better than per-tensor.",
-        appleWhy: "If quantization comes up, these are the minimum concepts you need to answer cleanly."
+        appleWhy: "If quantization comes up, these are the minimum concepts you need to answer cleanly.",
+        figure: "./assets/figures/quantization.svg",
+        figureCaption: "Simplified study figure: float values mapped into fewer discrete buckets."
       },
       {
         title: "AWQ: Activation-Aware Weight Quantization",
@@ -274,7 +285,9 @@
         tldr: "Computes shared prefixes once across a request batch, improving throughput for workloads with common system prompts or few-shot exemplars.",
         questions: ["What kinds of workloads benefit from prefix sharing?", "How does batching interact with latency and throughput?"],
         answer: "Explain that repeated system prompts, few-shot prefixes, and shared context make it possible to amortize prefill work across a batch. Also mention that larger batches can hurt tail latency if scheduled poorly.",
-        appleWhy: "Classic production trade-off territory: maximize throughput without ruining user experience."
+        appleWhy: "Classic production trade-off territory: maximize throughput without ruining user experience.",
+        figure: "./assets/figures/batching.svg",
+        figureCaption: "Simplified study figure: shared prefixes let you amortize expensive prefill work across requests."
       },
       {
         title: "DataFlow: A Data-Centric Framework for LLM Dataset Management",
@@ -423,6 +436,7 @@
           </div>
           <h3><a href="${getLink(p)}" target="_blank">${p.title}</a></h3>
           <div class="authors">${p.authors}</div>
+          ${p.figure ? `<div class="figure-wrap"><a class="figure-link" href="${p.figure}" target="_blank"><img src="${p.figure}" alt="Key figure for ${p.title}"><div class="figure-caption">${p.figureCaption || 'Key figure'}</div></a></div>` : ''}
           <div class="tldr">${p.tldr}</div>
           <div class="qa">
             <div class="qa-block"><strong>Possible questions</strong><br>${p.questions.join('<br>')}</div>

@@ -24,6 +24,11 @@
     .card h3 a:hover { color: #f78522; }
     .authors { font-size: 0.8rem; color: #8b949e; margin-bottom: 8px; }
     .tldr { font-size: 0.85rem; color: #c9d1d9; line-height: 1.5; margin-bottom: 12px; }
+    .qa { margin-top: 14px; padding-top: 12px; border-top: 1px solid #262c36; display: grid; gap: 10px; }
+    .qa-block { font-size: 0.82rem; line-height: 1.5; color: #c9d1d9; }
+    .qa-block strong { display: inline-block; margin-bottom: 4px; color: #f0f6fc; }
+    .callout { margin: 18px 40px 0; padding: 14px 16px; border: 1px solid #3d2c18; background: #21180f; color: #f2cc9b; border-radius: 10px; font-size: 0.88rem; line-height: 1.5; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; padding: 0 16px 24px; } .filters, .search, .count { padding-left: 16px; padding-right: 16px; } header { padding: 16px; } .callout { margin-left: 16px; margin-right: 16px; } }
     .card-footer { display: flex; justify-content: space-between; align-items: center; }
     .citations { font-size: 0.8rem; color: #8b949e; }
     .tags { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -64,7 +69,10 @@
         arxiv: "2106.09685",
         citations: 12000,
         tldr: "Freezes pretrained weights and injects trainable low-rank matrices BA into each layer. Reduces trainable parameters by 10,000x vs full fine-tuning with comparable performance on GPT-3 175B.",
-        tags: ["Fine-tuning", "LoRA"]
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"],
+        questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation save memory and optimizer state?"],
+        answer: "Say that LoRA freezes the base model and learns low-rank updates on selected weight matrices, which drastically cuts trainable params, optimizer memory, and checkpoint size while preserving downstream quality.",
+        appleWhy: "Apple cares because adapter-style updates are practical for product iteration, personalization, and constrained training/inference environments."
       },
       {
         title: "DoRA: Weight-Decomposed Low-Rank Adaptation",
@@ -73,7 +81,10 @@
         arxiv: "2402.09353",
         citations: 800,
         tldr: "Decomposes weight into magnitude + direction, applies LoRA only to direction component. More stable training and better learning capacity than standard LoRA.",
-        tags: ["Fine-tuning", "LoRA"]
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Fine-tuning", "LoRA"],
+        questions: ["What problem is LoRA solving compared with full fine-tuning?", "Why does low-rank adaptation save memory and optimizer state?"],
+        answer: "Say that LoRA freezes the base model and learns low-rank updates on selected weight matrices, which drastically cuts trainable params, optimizer memory, and checkpoint size while preserving downstream quality.",
+        appleWhy: "Apple cares because adapter-style updates are practical for product iteration, personalization, and constrained training/inference environments."
       },
       {
         title: "KVSharer: Efficient Inference via Layer-Wise Dissimilar KV Cache Sharing",
@@ -82,7 +93,10 @@
         arxiv: "2410.18517",
         citations: 10,
         tldr: "Shares KV cache across transformer layers by identifying dissimilar layers that can reuse each other's cache without accuracy loss. Reduces memory without retraining.",
-        tags: ["KV Cache", "Inference Efficiency"]
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Engineering", "KV Cache", "Inference Efficiency"],
+        questions: ["How can cache sharing reduce memory without retraining?", "What risks come from reusing KV across layers?"],
+        answer: "Emphasize that the method exploits similarity structure across layers to reuse cached representations, trading a small accuracy risk for significant memory savings. Mention that layer compatibility and quality degradation are the key concerns.",
+        appleWhy: "This hits a classic Apple-style trade-off question: efficiency gains under strict memory budgets."
       },
       {
         title: "SqueezeLLM: Dense-and-Sparse Quantization",
@@ -91,7 +105,10 @@
         arxiv: "2306.07629",
         citations: 350,
         tldr: "Separates weights into dense (quantized to low-bit) and sparse (kept at high precision) components. Achieves better accuracy than uniform quantization at same bit-width.",
-        tags: ["Quantization", "Weight Compression"]
+        tags: ["Apple Interview", "Core Concepts", "High Frequency", "Quantization", "Weight Compression"],
+        questions: ["How is SqueezeLLM different from uniform low-bit quantization?", "Why keep a sparse set of weights in high precision?"],
+        answer: "Say it decomposes the weight tensor into a dense low-bit component plus a sparse high-precision correction, so the most error-sensitive weights are preserved instead of forcing everything through the same quantizer.",
+        appleWhy: "This tests whether you understand quantization beyond slogans — especially the trade-off between compression and accuracy retention."
       },
       {
         title: "BatchLLM: Optimizing Large Batched LLM Inference with Global Prefix Sharing",
@@ -109,7 +126,10 @@
         arxiv: "2307.03738",
         citations: 30,
         tldr: "Auto-generates optimized CUDA kernels for quantized LLM inference. Bridges the gap between quantization research and deployment-ready performance.",
-        tags: ["Quantization", "Weight Compression", "Serving"]
+        tags: ["Apple Interview", "Engineering", "Quantization", "Weight Compression", "Serving"],
+        questions: ["Why is quantization not enough by itself for speedups?", "What role do kernels play in practical low-bit inference?"],
+        answer: "Point out that model compression only becomes real latency/throughput improvement when the runtime has kernels that exploit the low-bit layout efficiently. Otherwise you may save memory but not see end-to-end speed gains.",
+        appleWhy: "Apple tends to care about systems reality, not just algorithmic ideas, so kernel-level execution matters."
       },
     ];
 
@@ -150,6 +170,11 @@
           <h3><a href="https://arxiv.org/abs/${p.arxiv}" target="_blank">${p.title}</a></h3>
           <div class="authors">${p.authors}</div>
           <div class="tldr">${p.tldr}</div>
+          ${p.questions ? `<div class="qa">
+            <div class="qa-block"><strong>Possible questions</strong><br>${p.questions.join('<br>')}</div>
+            <div class="qa-block"><strong>How to answer</strong><br>${p.answer || ''}</div>
+            <div class="qa-block"><strong>Why Apple may care</strong><br>${p.appleWhy || ''}</div>
+          </div>` : ''}
           <div class="card-footer">
             <span class="citations">📊 ${p.citations.toLocaleString()} citations</span>
             <div class="tags">${p.tags.map(t => `<span class="tag-sm">${t}</span>`).join('')}</div>

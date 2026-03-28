@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Figures · nyn-knowledge</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f8fb; color: #1f2937; }
+    header { padding: 22px 40px; background: #fff; border-bottom: 1px solid #e5e7eb; display:flex; justify-content:space-between; align-items:center; gap:16px; position:sticky; top:0; }
+    header a { color:#2563eb; text-decoration:none; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .intro { background:#fffbeb; border:1px solid #fde68a; color:#92400e; padding:16px 18px; border-radius:14px; line-height:1.6; margin-bottom:20px; }
+    .grid { display:grid; gap:20px; }
+    .card { background:#fff; border:1px solid #e5e7eb; border-radius:18px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.03); }
+    .card img { width:100%; display:block; background:#fff; }
+    .body { padding:18px; }
+    .kicker { display:inline-block; padding:4px 10px; border-radius:999px; background:#eff6ff; color:#1d4ed8; font-size:.78rem; margin-bottom:10px; }
+    h2 { font-size:1.1rem; margin-bottom:8px; }
+    p { color:#4b5563; line-height:1.6; }
+    .small { margin-top:10px; font-size:.9rem; color:#6b7280; }
+    .links { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+    .btn { padding:8px 12px; border-radius:10px; border:1px solid #d1d5db; background:#fff; color:#374151; text-decoration:none; }
+    @media (max-width:700px){ header{padding:16px; flex-direction:column; align-items:flex-start;} .wrap{padding:16px;} }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <strong>🖼️ Key Figures</strong>
+      <div style="color:#6b7280;font-size:.92rem; margin-top:4px;">Simplified visual cheatsheets for interview review</div>
+    </div>
+    <a href="./interview.html">← Back to interview prep</a>
+  </header>
+  <div class="wrap">
+    <div class="intro">
+      These are <strong>simplified diagrams I made for review</strong> — not copied paper figures. The goal is fast recall on your phone: one picture, one idea, one interview takeaway.
+    </div>
+    <div class="grid">
+      <div class="card">
+        <img src="./assets/figures/lora.svg" alt="LoRA simplified figure">
+        <div class="body">
+          <span class="kicker">LoRA</span>
+          <h2>Freeze W, train tiny low-rank updates</h2>
+          <p>The mental model to remember is: full fine-tuning updates everything; LoRA keeps the base weights frozen and learns a tiny rank-limited correction.</p>
+          <div class="links"><a class="btn" href="https://arxiv.org/abs/2106.09685" target="_blank">Open paper</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/figures/kv-cache.svg" alt="KV cache simplified figure">
+        <div class="body">
+          <span class="kicker">KV Cache</span>
+          <h2>Reuse the prefix, pay in memory</h2>
+          <p>This is the highest-yield intuition: KV caching reduces repeated compute during decoding, but the cache itself becomes a memory bottleneck.</p>
+          <div class="links"><a class="btn" href="https://huggingface.co/blog/not-lain/kv-caching" target="_blank">Open explainer</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/figures/quantization.svg" alt="Quantization simplified figure">
+        <div class="body">
+          <span class="kicker">Quantization</span>
+          <h2>Continuous values into fewer buckets</h2>
+          <p>Remember the trade: smaller storage and potentially faster kernels, at the cost of approximation error. Then be ready to talk PTQ vs QAT and per-tensor vs per-channel.</p>
+          <div class="links"><a class="btn" href="https://huggingface.co/blog/royswastik/llm-quantization" target="_blank">Open basics</a><a class="btn" href="https://leimao.github.io/blog/AWQ-Activation-Aware-Weight-Quantization/" target="_blank">Open AWQ</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/figures/batching.svg" alt="Batching simplified figure">
+        <div class="body">
+          <span class="kicker">Batching</span>
+          <h2>Shared prefix means shared prefill work</h2>
+          <p>Batching is not just “more requests at once.” In LLM serving, the interesting question is whether requests share enough structure that you can amortize expensive work.</p>
+          <div class="links"><a class="btn" href="https://arxiv.org/abs/2412.03594" target="_blank">Open BatchLLM</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

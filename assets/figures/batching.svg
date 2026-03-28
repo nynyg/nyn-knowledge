@@ -1,0 +1,22 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="34" font-family="Arial" font-weight="700" fill="#111827">Batching + prefix sharing</text>
+  <text x="60" y="110" font-size="20" font-family="Arial" fill="#6b7280">If multiple requests share the same prefix, compute that prefix once.</text>
+  <rect x="80" y="180" width="480" height="330" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="110" y="225" font-size="26" font-family="Arial" font-weight="700" fill="#111827">Naive batching</text>
+  <rect x="120" y="270" width="320" height="40" rx="8" fill="#dbeafe"/><rect x="450" y="270" width="70" height="40" rx="8" fill="#fde68a"/>
+  <rect x="120" y="330" width="320" height="40" rx="8" fill="#dbeafe"/><rect x="450" y="330" width="70" height="40" rx="8" fill="#fca5a5"/>
+  <rect x="120" y="390" width="320" height="40" rx="8" fill="#dbeafe"/><rect x="450" y="390" width="70" height="40" rx="8" fill="#86efac"/>
+  <text x="120" y="465" font-size="22" font-family="Arial" fill="#374151">Shared prefix is redundantly prefetched for each request.</text>
+  <rect x="640" y="180" width="480" height="330" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="670" y="225" font-size="26" font-family="Arial" font-weight="700" fill="#111827">Prefix sharing</text>
+  <rect x="680" y="270" width="320" height="55" rx="10" fill="#dbeafe"/>
+  <text x="840" y="304" text-anchor="middle" font-size="22" font-family="Arial" fill="#1e3a8a">compute shared prefix once</text>
+  <path d="M840 330 V390" stroke="#64748b" stroke-width="5"/>
+  <path d="M840 390 H710" stroke="#64748b" stroke-width="5"/>
+  <path d="M840 390 H970" stroke="#64748b" stroke-width="5"/>
+  <rect x="680" y="390" width="90" height="40" rx="8" fill="#fde68a"/><rect x="800" y="390" width="90" height="40" rx="8" fill="#fca5a5"/><rect x="920" y="390" width="90" height="40" rx="8" fill="#86efac"/>
+  <text x="680" y="465" font-size="22" font-family="Arial" fill="#374151">More throughput when many prompts share a common stem.</text>
+  <rect x="80" y="555" width="1040" height="90" rx="18" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+  <text x="110" y="610" font-size="22" font-family="Arial" fill="#7c2d12">Interview takeaway: batching improves utilization, but can hurt tail latency if you over-wait to build large batches.</text>
+</svg>

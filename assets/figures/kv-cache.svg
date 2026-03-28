@@ -1,0 +1,22 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="34" font-family="Arial" font-weight="700" fill="#111827">KV cache during decoding</text>
+  <text x="60" y="110" font-size="20" font-family="Arial" fill="#6b7280">Reuse old keys/values instead of recomputing the whole prefix every token.</text>
+  <rect x="70" y="180" width="460" height="280" rx="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="100" y="225" font-size="26" font-family="Arial" font-weight="700" fill="#111827">Without cache</text>
+  <rect x="100" y="270" width="70" height="70" rx="10" fill="#dbeafe"/><rect x="180" y="270" width="70" height="70" rx="10" fill="#dbeafe"/><rect x="260" y="270" width="70" height="70" rx="10" fill="#dbeafe"/><rect x="340" y="270" width="70" height="70" rx="10" fill="#bfdbfe"/>
+  <text x="100" y="385" font-size="22" font-family="Arial" fill="#374151">At token t, recompute K/V for all previous tokens again.</text>
+  <text x="100" y="420" font-size="22" font-family="Arial" fill="#374151">Compute cost keeps revisiting the growing prefix.</text>
+  <rect x="670" y="180" width="460" height="280" rx="20" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="700" y="225" font-size="26" font-family="Arial" font-weight="700" fill="#111827">With cache</text>
+  <rect x="700" y="270" width="70" height="70" rx="10" fill="#d1fae5"/><rect x="780" y="270" width="70" height="70" rx="10" fill="#d1fae5"/><rect x="860" y="270" width="70" height="70" rx="10" fill="#d1fae5"/>
+  <text x="966" y="317" font-size="38" font-family="Arial" fill="#64748b">+</text>
+  <rect x="1010" y="270" width="70" height="70" rx="10" fill="#fde68a"/>
+  <text x="700" y="385" font-size="22" font-family="Arial" fill="#374151">Old tokens keep their cached K/V.</text>
+  <text x="700" y="420" font-size="22" font-family="Arial" fill="#374151">Only compute the new token, then attend against cached prefix.</text>
+  <path d="M540 320 H640" stroke="#64748b" stroke-width="6" marker-end="url(#arrow)"/>
+  <rect x="70" y="515" width="1060" height="120" rx="18" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+  <text x="100" y="565" font-size="24" font-family="Arial" font-weight="700" fill="#9a3412">Trade-off</text>
+  <text x="230" y="565" font-size="22" font-family="Arial" fill="#7c2d12">Lower decode compute and latency, but KV cache memory grows with sequence length × layers × heads × batch.</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#64748b"/></marker></defs>
+</svg>

@@ -23,6 +23,12 @@
     .tag { padding: 10px 14px; border-radius: 12px 12px 0 0; font-size: 0.84rem; cursor: pointer; border: 1px solid #d1d5db; border-bottom: 2px solid #e5e7eb; background: #f9fafb; color: #4b5563; transition: all 0.18s; white-space: nowrap; }
     .tag:hover, .tag.active { background: #fff; border-color: #fdba74; border-bottom-color: #f59e0b; color: #c2410c; }
     .count { padding: 0 40px 14px; font-size: 0.92rem; color: #6b7280; }
+    .focus { margin: 0 40px 22px; padding: 18px; border: 1px solid #fed7aa; background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%); border-radius: 18px; }
+    .focus-kicker { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #ffedd5; color: #c2410c; font-size: 0.76rem; font-weight: 700; margin-bottom: 10px; }
+    .focus h2 { font-size: 1.1rem; margin-bottom: 8px; color: #111827; }
+    .focus p { color: #4b5563; line-height: 1.6; margin-bottom: 10px; }
+    .focus ul { margin-left: 18px; color: #374151; line-height: 1.65; }
+    .focus li { margin-bottom: 6px; }
     .grid { padding: 0 40px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
     .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .card:hover { border-color: #fdba74; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
@@ -51,6 +57,7 @@
     @media (max-width: 700px) {
       header { padding: 16px; flex-direction: column; align-items: flex-start; }
       .search, .toolbar, .count { padding-left: 16px; padding-right: 16px; }
+      .focus { margin-left: 16px; margin-right: 16px; }
       .callout { margin-left: 16px; margin-right: 16px; }
       .grid { grid-template-columns: 1fr; padding: 0 16px 24px; }
       .card { padding: 16px; }
@@ -84,6 +91,19 @@
     <div class="filters" id="filterTags"></div>
   </div>
   <div class="count" id="countLabel"></div>
+
+  <section class="focus" id="tonightFocus">
+    <span class="focus-kicker">TONIGHT’S FOCUS</span>
+    <h2>Quantization Basics</h2>
+    <p>Good default nightly pick because it unlocks half the rest of the interview list: AWQ, SqueezeLLM, QIGen, llama.cpp, and on-device efficiency all become easier once the basics are solid.</p>
+    <ul>
+      <li><strong>Read tonight:</strong> LLM Quantization Basics → then AWQ if you still have energy.</li>
+      <li><strong>Likely question:</strong> “What is the difference between PTQ and QAT, and why does per-channel quantization often work better?”</li>
+      <li><strong>Answer angle:</strong> PTQ happens after training, QAT simulates quantization during training; per-channel gives each channel its own scale, which usually reduces error versus forcing one scale across everything.</li>
+      <li><strong>5-minute win:</strong> Be ready to explain scale, zero-point, PTQ vs QAT, and why quantization needs kernel/runtime support to create real speedups.</li>
+    </ul>
+  </section>
+
   <div class="grid" id="paperGrid"></div>
 
   <script>

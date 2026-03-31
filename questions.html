@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Questions · nyn-knowledge</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f8fb; color: #1f2937; min-height: 100vh; }
+    header { background: #ffffffcc; backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; position: sticky; top: 0; z-index: 10; }
+    header h1 { font-size: 1.4rem; font-weight: 700; color: #111827; }
+    header span { font-size: 0.9rem; color: #6b7280; }
+    header a { font-size: 0.95rem; color: #2563eb; text-decoration: none; }
+    .wrap { padding: 24px 40px 40px; }
+    .callout { padding: 16px 18px; border: 1px solid #fde68a; background: #fffbeb; color: #92400e; border-radius: 14px; font-size: 0.93rem; line-height: 1.6; margin-bottom: 18px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+    .tabs { display: flex; gap: 8px; overflow-x: auto; }
+    .tab { padding: 10px 14px; border-radius: 12px 12px 0 0; font-size: 0.84rem; cursor: pointer; border: 1px solid #d1d5db; border-bottom: 2px solid #e5e7eb; background: #f9fafb; color: #4b5563; white-space: nowrap; }
+    .tab.active { background: #fff; border-color: #fdba74; border-bottom-color: #f59e0b; color: #c2410c; }
+    .count { color: #6b7280; font-size: .92rem; margin-bottom: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+    .flip-card { perspective: 1200px; min-height: 280px; }
+    .flip-inner { position: relative; width: 100%; min-height: 280px; transition: transform .6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .face { position: absolute; inset: 0; backface-visibility: hidden; background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; box-shadow: 0 1px 2px rgba(0,0,0,.03); padding: 18px; display: flex; flex-direction: column; }
+    .back { transform: rotateY(180deg); }
+    .kickers { display:flex; gap:6px; flex-wrap:wrap; margin-bottom: 12px; }
+    .badge { font-size: .72rem; padding: 3px 8px; border-radius: 999px; border: 1px solid #e5e7eb; background: #f9fafb; color: #4b5563; }
+    .priority-must { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+    .priority-important { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    h3 { font-size: 1rem; line-height: 1.45; margin-bottom: 10px; color: #111827; }
+    .meta { color: #6b7280; font-size: .84rem; margin-bottom: 12px; }
+    .body { color: #374151; line-height: 1.65; font-size: .92rem; }
+    .spacer { flex: 1; }
+    .hint { color: #9ca3af; font-size: .8rem; margin-top: 14px; }
+    .btnrow { margin-top: 16px; display:flex; gap:10px; flex-wrap:wrap; }
+    button, .linkbtn { border: 1px solid #d1d5db; background: #fff; color: #374151; border-radius: 10px; padding: 8px 12px; font-size: .84rem; cursor: pointer; text-decoration:none; }
+    button.primary { background: #fff7ed; border-color: #fdba74; color: #c2410c; }
+    ul { margin-left: 18px; }
+    li { margin-bottom: 6px; }
+    @media (max-width: 700px) {
+      header { padding: 16px; flex-direction: column; align-items: flex-start; }
+      .wrap { padding: 16px 16px 24px; }
+      .grid { grid-template-columns: 1fr; }
+      .flip-card, .flip-inner { min-height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🃏 Interview Questions</h1>
+      <span>Flip cards for nightly drills and quick recall.</span>
+    </div>
+    <div style="display:flex; gap:14px; flex-wrap:wrap;">
+      <a href="interview.html">View interview prep</a>
+      <a href="index.html">← Back to knowledge home</a>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="callout">
+      This page is meant for <strong>daily updates</strong>. I can keep adding one interview-style question at a time here, with the front side as the prompt and the back side as the answer. Tap or click <strong>Flip card</strong> to reveal the answer.
+    </div>
+    <div class="toolbar">
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <script>
+    const cards = [
+      {
+        date: '2026-03-30',
+        topic: 'Numerics',
+        type: 'Training',
+        priority: 'Must Read',
+        question: 'Why is BF16 usually more stable than FP16 for training large models, and what trade-off do you pay for using it?',
+        answer: 'BF16 is usually more stable because it keeps the same exponent width as FP32, so it has a much larger dynamic range. That makes overflow and underflow much less likely during large-model training. FP16 has a narrower exponent range, so it is more fragile and often needs loss scaling. The trade-off is that BF16 has fewer mantissa bits, so you lose some precision in the significand. In practice, for large-model training, that loss of precision is usually a better trade than FP16's limited range.',
+        bullets: [
+          'BF16 ≈ FP32 range, lower mantissa precision.',
+          'FP16 has narrower range, so it is easier to overflow/underflow.',
+          'Training usually cares more about dynamic range than extra mantissa precision.'
+        ],
+        why: 'Good interview question because it tests whether you understand mixed-precision training beyond memorizing datatype names.'
+      }
+    ];
+
+    const tabs = ['All', ...new Set(cards.map(c => c.topic))];
+    let activeTab = 'All';
+
+    function priorityClass(priority) {
+      if (priority === 'Must Read') return 'priority-must';
+      if (priority === 'Important') return 'priority-important';
+      return '';
+    }
+
+    function renderTabs() {
+      document.getElementById('tabs').innerHTML = tabs.map(t =>
+        `<div class="tab ${activeTab===t?'active':''}" onclick="setTab('${t.replace(/'/g, "\'")}')">${t}</div>`
+      ).join('');
+    }
+
+    function setTab(tab) {
+      activeTab = tab;
+      renderTabs();
+      renderCards();
+    }
+
+    function flip(i) {
+      document.getElementById(`card-${i}`).classList.toggle('flipped');
+    }
+
+    function renderCards() {
+      const list = cards.filter(c => activeTab === 'All' || c.topic === activeTab);
+      document.getElementById('count').textContent = `${list.length} question${list.length !== 1 ? 's' : ''}`;
+      document.getElementById('grid').innerHTML = list.map((c, i) => `
+        <div class="flip-card" id="card-${i}">
+          <div class="flip-inner">
+            <div class="face front">
+              <div class="kickers">
+                <span class="badge">${c.date}</span>
+                <span class="badge">${c.topic}</span>
+                <span class="badge">${c.type}</span>
+                <span class="badge ${priorityClass(c.priority)}">${c.priority}</span>
+              </div>
+              <h3>${c.question}</h3>
+              <div class="meta">Interview-style prompt for tonight</div>
+              <div class="body">Try answering out loud first before flipping.</div>
+              <div class="spacer"></div>
+              <div class="hint">Front side = question · Back side = answer</div>
+              <div class="btnrow"><button class="primary" onclick="flip(${i})">Flip card</button></div>
+            </div>
+            <div class="face back">
+              <div class="kickers">
+                <span class="badge">Answer</span>
+                <span class="badge">${c.topic}</span>
+              </div>
+              <h3>${c.question}</h3>
+              <div class="body">${c.answer}</div>
+              <div class="body" style="margin-top:12px;"><strong>Key points</strong><ul>${c.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>
+              <div class="body" style="margin-top:10px;"><strong>Why they may ask it</strong><br>${c.why}</div>
+              <div class="spacer"></div>
+              <div class="btnrow"><button onclick="flip(${i})">Flip back</button></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderTabs();
+    renderCards();
+  </script>
+</body>
+</html>

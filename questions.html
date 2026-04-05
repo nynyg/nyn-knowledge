@@ -31,6 +31,9 @@
     h3 { font-size: 1rem; line-height: 1.45; margin-bottom: 10px; color: #111827; }
     .meta { color: #6b7280; font-size: .84rem; margin-bottom: 12px; }
     .body { color: #374151; line-height: 1.65; font-size: .92rem; }
+    .figure-wrap { margin: 12px 0 14px; }
+    .figure-wrap img { width: 100%; display: block; border: 1px solid #e5e7eb; border-radius: 14px; background: #f9fafb; }
+    .figure-caption { color: #6b7280; font-size: .8rem; margin-top: 8px; }
     .spacer { flex: 1; }
     .hint { color: #9ca3af; font-size: .8rem; margin-top: 14px; }
     .btnrow { margin-top: 16px; display:flex; gap:10px; flex-wrap:wrap; }
@@ -83,6 +86,24 @@
           'Training usually cares more about dynamic range than extra mantissa precision.'
         ],
         why: 'Good interview question because it tests whether you understand mixed-precision training beyond memorizing datatype names.'
+      },
+      {
+        date: '2026-04-04',
+        topic: 'Serving',
+        type: 'System Design',
+        priority: 'Must Read',
+        figure: './assets/figures/serving-10k-qps.svg',
+        figureCaption: 'A clean whiteboard answer: workload → prefill/decode → scheduler → KV cache → runtime.',
+        question: 'Design an LLM inference serving system that can handle 10k QPS. What are the first 5 components or design decisions you’d put on the whiteboard, and how would you trade off latency vs throughput?',
+        answer: 'I would structure the answer around five things: (1) define the workload in tokens, prompt length, output length, and latency target rather than just raw QPS; (2) separate prefill and decode because they are different workloads; (3) design a scheduler with continuous batching and bounded queueing; (4) treat KV cache and memory management as first-class, including paging, reuse, and eviction; and (5) choose a model/runtime strategy with quantization, optimized kernels, and possibly request routing. The main trade-off is that throughput improves with larger batches, more queueing, and more cache reuse, while latency—especially p95/p99—gets worse. So I would optimize for p95 latency under a throughput target, not for raw max throughput alone.',
+        bullets: [
+          'Start by converting QPS into token throughput and latency SLOs.',
+          'Prefill is compute-heavy; decode is usually memory/KV-cache dominated.',
+          'Continuous batching helps throughput but hurts tail latency if queueing grows.',
+          'KV cache is a systems resource, not just a model feature.',
+          'Quantization only helps end-to-end if kernels and runtime exploit it well.'
+        ],
+        why: 'This tests whether you can think like an ML systems engineer instead of naming isolated tricks.'
       }
     ];
 
@@ -137,6 +158,7 @@
                 <span class="badge">${c.topic}</span>
               </div>
               <h3>${c.question}</h3>
+              ${c.figure ? `<div class="figure-wrap"><img src="${c.figure}" alt="Diagram for ${c.question}"><div class="figure-caption">${c.figureCaption || ''}</div></div>` : ''}
               <div class="body">${c.answer}</div>
               <div class="body" style="margin-top:12px;"><strong>Key points</strong><ul>${c.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>
               <div class="body" style="margin-top:10px;"><strong>Why they may ask it</strong><br>${c.why}</div>
